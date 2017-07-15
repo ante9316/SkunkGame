@@ -19,7 +19,7 @@ public class Player
 
 	protected String getPlayerName()
 	{
-		return playerName;
+		return this.playerName;
 	}
 
 	protected void setPlayerName(String playerName)
@@ -29,17 +29,17 @@ public class Player
 
 	protected int getChip()
 	{
-		return chip;
+		return this.chip;
 	}
 
 	protected void setChip(int chip)
 	{
-		this.chip = chip;
+		this.chip = this.chip - chip;
 	}
 
 	protected int getPlayerRoundScore()
 	{
-		return gameScore;
+		return this.gameScore;
 	}
 
 	protected void setPlayerRoundScore(int playerRoundScore)

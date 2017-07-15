@@ -11,11 +11,6 @@ public class GameController
 
 	protected boolean isLastTurn;
 
-	public GameController()
-	{
-
-	}
-
 	public Player createPlayer(String newPlayerName)
 	{
 
@@ -78,42 +73,63 @@ public class GameController
 
 	}
 
-	public boolean isTurnOver()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	// Advancing to the next available player
-	public boolean moveToNextPlayer(Player activePlayer, GameController newGame, int numOfRemainingPlayers)
+	public void moveToNextPlayer(Player activePlayer, GameController newGame)
 	{
 
 		// Check if end of list reached and start over from the beginning,
 		// otherwise set the next player in the list
-		if (numOfRemainingPlayers != 0)
+		if (newGame.activePlayerindex == newGame.listOfPlayers.size() - 1)
 		{
-			if (newGame.activePlayerindex == newGame.listOfPlayers.size() - 1)
-			{
-				newGame.setActivePlayer(newGame.listOfPlayers.get(0).getPlayerName());
-			}
-			else
-			{
-				newGame.setActivePlayer(newGame.listOfPlayers.get(activePlayerindex + 1).getPlayerName());
-
-			}
-			return true;
+			newGame.setActivePlayer(newGame.listOfPlayers.get(0).getPlayerName());
 		}
 		else
 		{
-			return false;
+			newGame.setActivePlayer(newGame.listOfPlayers.get(activePlayerindex + 1).getPlayerName());
+
 		}
 
 	}
 
-	public String whoIsWinner()
+	protected Player calculateFinalScore(GameController newGame)
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+		Map<Player, Round> tempRounds = newGame.playerRound;
 
+		StdOut.println("00000" + tempRounds.size());
+
+		int maxScore = tempRounds.get(getActivePlayer()).getRoundScore();
+		Player playerWithMaxScore = activePlayer;
+
+		// find out the player with the max round score
+		for (Player player : tempRounds.keySet())
+		{
+			if (tempRounds.get(player).getRoundScore() > maxScore)
+			{
+				maxScore = tempRounds.get(player).getRoundScore();
+				playerWithMaxScore = player;
+			}
+		}
+
+		// update the final score for the winner
+		int FinalScore = tempRounds.get(playerWithMaxScore).getRoundScore() + Kitty.getKittyTotal();
+
+		// Add 5 chips from each losing player
+		for (Player player : tempRounds.keySet())
+		{
+			if (!tempRounds.containsKey(playerWithMaxScore))
+			{
+				FinalScore += 5;
+				player.setChip(5);
+			}
+			else if (tempRounds.get(player).getRoundScore() == 0)
+			{
+				FinalScore += 10;
+			}
+			tempRounds.get(playerWithMaxScore).setRoundScore(FinalScore);
+		}
+
+		return playerWithMaxScore;
+
+	}
+	// update the total chips for the winner
 }

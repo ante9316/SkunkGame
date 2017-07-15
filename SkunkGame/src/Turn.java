@@ -24,27 +24,40 @@ public class Turn
 	public Roll playTurn(Map<Player, Round> playerRound, GameController newGame, Turn activeTurn)
 	{
 		Roll newRoll = new Roll();
-
+		Kitty newKitty = new Kitty();
 		// Check order matters here
 		if (newRoll.isTwoSkunksRolled())
 		{
 			activeTurn.turnScore = 0;
-
 			playerRound.get(newGame.getActivePlayer()).roundScore = 0;
+
+			newGame.getActivePlayer().setChip(4);
+
+			newKitty.addToKitty(4);
+
 			return newRoll;
 		}
 
-		if (newRoll.isSkunkAndDeuceRolled())
+		else if (newRoll.isSkunkAndDeuceRolled())
 		{
-			// StdOut.println("ONE SKUNK & ONE DEUCE");
+
 			activeTurn.turnScore = 0;
+
+			newGame.getActivePlayer().setChip(2);
+
+			newKitty.addToKitty(2);
+
 			return newRoll;
 		}
 
-		if (newRoll.isSkunkRolled())
+		else if (newRoll.isSkunkRolled())
 		{
-			// StdOut.println("ONE SKUNK");
+
 			activeTurn.turnScore = 0;
+			newGame.getActivePlayer().setChip(1);
+
+			newKitty.addToKitty(1);
+
 			return newRoll;
 		}
 
